@@ -18,7 +18,7 @@ class App extends Component {
     //DON"T DO THIS: this.state.persons[0].name='Maximilian';
     this.setState({
       persons: [
-        {name: 'newName', age: 28},
+        {name: newName, age: 28},
         {name: 'Manu', age: 29},
         {name: 'Stephanie', age: 27}
       ]
@@ -32,9 +32,16 @@ class App extends Component {
         {name: 'Max', age: 28},
         {name: event.target.value, age: 29},
         {name: 'Stephanie', age: 26}
-      ]
+      ], 
+      showPersons: false
     })
 
+  }
+
+  togglePersonsHandler = () =>  {
+    const doesShow = this.state.showPersons;
+    //below line sets showPersons to the opposite of what it currently is
+    this.setState({ showPersons: !doesShow })
   }
 
   render() {
@@ -52,22 +59,27 @@ class App extends Component {
         <p>This is really working!</p>
         <button 
           style={style} 
-          onClick={ () =>  this.switchNameHandler('Maximilian!!') }>Switch Name</button> {/*can be inefficient. Use bind instead*/}
-        <Person 
-          name={ this.state.persons[0].name } 
-          age={ this.state.persons[0].age }
-        />
-        <Person 
-          name={ this.state.persons[1].name } 
-          age={ this.state.persons[1].age }
-          click={ this.switchNameHandler.bind(this, 'Max!') } 
-          changed={ this.nameChangedHandler } >
-            My Hobbies: Racing 
-        </Person>
-        <Person 
-          name={ this.state.persons[2].name } 
-          age={ this.state.persons[2].age }
-        />
+          onClick={ this.togglePersonsHandler }>Switch Name</button> {/*can be inefficient. Use bind instead*/}
+          {//check if showPersons : true. If true, render personsContainer div. Else, render nothing.}
+        { this.state.showPersons ? 
+          <div className='personsContainer'>
+          <Person 
+            name={ this.state.persons[0].name } 
+            age={ this.state.persons[0].age }
+          />
+          <Person 
+            name={ this.state.persons[1].name } 
+            age={ this.state.persons[1].age }
+            click={ this.switchNameHandler.bind(this, 'Max!') } 
+            changed={ this.nameChangedHandler } >
+              My Hobbies: Racing 
+          </Person>
+          <Person 
+            name={ this.state.persons[2].name } 
+            age={ this.state.persons[2].age }
+          />
+        </div> : null
+        }
       </div>
     );
   }
